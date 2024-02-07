@@ -6,8 +6,8 @@ import java.util.*;
  * This class implements the Depth-First Branch and Bound search algorithm
  * this algorithm searches through the state space from the start state to the goal state
  *
- *  */
  */
+
 public class DFBnB {
 
     private Node _start;
@@ -36,7 +36,10 @@ public class DFBnB {
         L.push(_start);
         OL.put(_start.getStateAsString(), _start);
         Stack<Node> result = new Stack<>();
-        int t = Math.min(Integer.MAX_VALUE, factorial(_start.getGameBoard().length));
+        int t = Integer.MAX_VALUE;
+        if(_start.getGameBoard().length<=12){
+            t= factorial(_start.getGameBoard().length);
+        }
         while (!L.isEmpty()) {
             if(_openList){
                 System.out.println("Open List: "+OL.toString());

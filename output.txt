@@ -1,4 +1,4 @@
 6L-7U-11L
-Num: 19
+Num: 14
 Cost: 61
-0.004 seconds
+0.002 seconds
