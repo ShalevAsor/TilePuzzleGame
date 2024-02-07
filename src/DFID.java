@@ -148,7 +148,7 @@ public class DFID {
 
             LimitedDFSResult result = Limited_DFS(_start,goal,depth,onPath);
 
-            if(!result.getCutOff().equals(CUTOFF)){
+            if(!result.getCutOff().equals(CUTOFF) ){
                 return result; // we reach the limit of the search depth , then return cutoff
             }
         }
@@ -166,7 +166,9 @@ public class DFID {
 
     private LimitedDFSResult Limited_DFS(Node n, Node goal, int limit, Hashtable<String, Node> onPath) {
         LimitedDFSResult result = new LimitedDFSResult();
-
+        if(_openList){
+            System.out.println("Open List: "+onPath.toString());
+        }
         if (n.equals(goal)) {//we reach the goal
             result.setPath(NodeUtils.reconstructPath( n)); //reconstruct the path from this node
             moves = NodeUtils.getMovesAsString(result.getPath());
@@ -176,15 +178,15 @@ public class DFID {
             return result;
         } else { //start the search
             onPath.put(n.getStateAsString(), n);
-            if(_openList){
-                System.out.println(onPath.toString());
-            }
             boolean isCutOff = false;
 
             //  there are at most 4 possible moves , allowedOperators generating this node children
 
             for (Node operator : Operators.allowedOperators(n)) {
-                if (onPath.contains(operator.getStateAsString())) {// loop avoidance
+//                System.out.println("Operator state: " + operator.getStateAsString());
+//                System.out.println("onPath contents: " + onPath);
+                if (onPath.containsKey(operator.getStateAsString())) {// loop avoidance
+                    System.out.println("VISITED");
                     continue;
                 }
 
@@ -210,27 +212,27 @@ public class DFID {
     }
 
 
-    /**
-     * This method return the total cost of a path
-     * @param path -
-     * @return total cost of a path
-     */
-    private int getPathCost(List<Node> path) {
-        int totalCost = 0;
-
-        for (int i = 1; i < path.size(); i++) {
-            Node currentNode = path.get(i);
-            Node previousNode = path.get(i - 1);
-
-            int moveCost = 1;//if we didnt move a white tile then the cost is 30
-            if (!currentNode.getBoard().isWhiteTile(previousNode.getBoard().getTileValue(currentNode.getEmptyTileIndex()))) {
-                moveCost = 30;
-            }//update total cost
-            totalCost += moveCost;
-        }
-
-        return totalCost;
-    }
+//    /**
+//     * This method return the total cost of a path
+//     * @param path -
+//     * @return total cost of a path
+//     */
+//    private int getPathCost(List<Node> path) {
+//        int totalCost = 0;
+//
+//        for (int i = 1; i < path.size(); i++) {
+//            Node currentNode = path.get(i);
+//            Node previousNode = path.get(i - 1);
+//
+//            int moveCost = 1;//if we didnt move a white tile then the cost is 30
+//            if (!currentNode.getBoard().isWhiteTile(previousNode.getBoard().getTileValue(currentNode.getEmptyTileIndex()))) {
+//                moveCost = 30;
+//            }//update total cost
+//            totalCost += moveCost;
+//        }
+//
+//        return totalCost;
+//    }
 
     public String getMoves() {
         return moves;
@@ -243,7 +245,7 @@ public class DFID {
     }
 
     public String getCost(List<Node> path) {
-        int totalCost = getPathCost(path);
+        int totalCost = NodeUtils.getPathCost(path);
         return String.valueOf(totalCost);
     }
 

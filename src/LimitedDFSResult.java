@@ -42,12 +42,12 @@ public class LimitedDFSResult {
     public Stack<Node> getPath() {
         return _path;
     }
-    public String printPath(){
+    public void printPath(){
         String s ="";
         while(!_path.isEmpty()){
             s += _path.pop().toString();
         }
-        return s;
+        System.out.println(s);
     }
 
     public void setPath(Stack<Node> path) {

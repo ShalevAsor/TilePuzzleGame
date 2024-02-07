@@ -1,7 +1,4 @@
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 
 /**
@@ -84,6 +81,69 @@ public class NodeUtils {
 
         return movesBuilder.toString();
     }
+    public static int manhattanDistance(Node from){
+        int distance  = 0;
+        int[] fromGameBoard = from.getGameBoard();
+        for(int i = 0; i< fromGameBoard.length;i++){
+            distance += calcDistance(fromGameBoard,i);
+        }
+        return distance;
+    }
 
+    private static int calcDistance(int[] fromGameBoard, int i) {
+        int[] goalState = generateGoalState(fromGameBoard.length);
+        int value = fromGameBoard[i];
+
+        if (value != 0) {  // Skip the empty space (assuming 0 represents an empty cell)
+            int fromX = (int) (i % Math.sqrt(fromGameBoard.length));
+            int fromY = (int) (i / Math.sqrt(fromGameBoard.length));
+
+            int toIndex = findIndex(goalState, value);
+            int toX = (int) (toIndex % Math.sqrt(fromGameBoard.length));
+            int toY = (int) (toIndex / Math.sqrt(fromGameBoard.length));
+
+            // Calculate Manhattan Distance
+            int distance = Math.abs(fromX - toX) + Math.abs(fromY - toY);
+            return distance;
+        }
+
+        return 0;  // If it's an empty space, distance is 0
+    }
+
+    private static int findIndex(int[] array, int value) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) {
+                return i;
+            }
+        }
+        return -1;  // Value not found
+    }
+
+    public static int[] generateGoalState(int size){
+        int[] state = new int[size];
+        for(int i = 0; i < size-1; i++){
+            state[i] = i+1;
+        }
+        state[size-1] = 0;
+        return state;
+    }
+
+    public static int getPathCost(List<Node> path) {
+        if(path == null)return 0;
+        int totalCost = 0;
+
+        for (int i = 1; i < path.size(); i++) {
+            Node currentNode = path.get(i);
+            Node previousNode = path.get(i - 1);
+
+            int moveCost = 1;//if we didnt move a white tile then the cost is 30
+            if (!currentNode.getBoard().isWhiteTile(previousNode.getBoard().getTileValue(currentNode.getEmptyTileIndex()))) {
+                moveCost = 30;
+            }//update total cost
+            totalCost += moveCost;
+        }
+
+        return totalCost;
+    }
 
 }

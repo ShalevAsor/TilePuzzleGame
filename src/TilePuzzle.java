@@ -1,7 +1,6 @@
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -24,35 +23,80 @@ public class TilePuzzle {
      * This function set the game , its generating the goal state (The goal state is always the same)
      * creating output file with the chosen algorithm data
      */
-    public void startGame(){
+    public void solve(){
         String output = "";
         Node goal = generateGoalNode(); // init goal
         /* Cover all the input options  */
 
-        if(_algo.equals("DFID")){ // Need to run DFID algorithm
-            DFID dfid = new DFID(_openList,_start);
-            LimitedDFSResult res = dfid.DFIdAlgo(goal);//run algorithm from start to goal
-            output += dfid.getMoves(); //first line of the output is the algorithm moves
+        switch (_algo) {
+            case "DFID": {
+                DFID dfid = new DFID(_openList, _start); //init DFID with start Node and open list indicator
+                LimitedDFSResult res = dfid.DFIdAlgo(goal);// start the search and print the output according to input
+                generateOutPut(output, dfid.getMoves(), dfid.getGeneratedNodesAmount(), dfid.getCost(res.getPath()), dfid.getRunningTime(), res.getPath().size());
+                break;
+            }
+            case "A*": {
+                AStar aStar = new AStar(_start, _openList);
+                Stack<Node> res = aStar.UCS(goal);
+                generateOutPut(output, aStar.getMoves(), aStar.getGeneratedNodesAmount(), aStar.getCost(res), aStar.getRunningTime(), res.size());
+                break;
+            }
+            case "IDA*": {
+                IDAStar idaStar = new IDAStar(_start, _openList);
+                List<Node> res = idaStar.IDAStarSearch(goal);
+                generateOutPut(output, idaStar.getMoves(), idaStar.getGeneratedNodesAmount(), idaStar.getCost(res), idaStar.getRunningTime(), res.size());
+                break;
+            }
+            case "DFBnB": {
+                DFBnB dfBnB = new DFBnB(_start, _openList);
+                List<Node> res = dfBnB.DFBnBSearch(goal);
+                generateOutPut(output, dfBnB.getMoves(), dfBnB.getGeneratedNodesAmount(), dfBnB.getCost(res), dfBnB.getRunningTime(), res.size());
+                break;
+            }
+        }
+    }
+
+    /**
+     * This function stream the output to output.txt file according the given format
+     * @param output- the algorithm output
+     * @param moves - the moves of the algorithm for solving the puzzle
+     * @param generatedNodesAmount
+     * @param cost - path cost
+     * @param runningTime
+     * @param pathSize
+     */
+
+    private void generateOutPut(String output, String moves, String generatedNodesAmount, String cost, String runningTime,int pathSize) {
+        if(pathSize == 0){
+            output+="no path";
             output+="\n";
-            output += "Num: " +dfid.getGeneratedNodesAmount(); //all the nodes that generated *include nodes that are not in the open list
-            output +="\n";
-            output += "Cost: " +dfid.getCost(res.getPath());//Path cost
-            output +="\n";
-            if(_time){
-                output += dfid.getRunningTime(); //DFID running time
-            }
-            try { //output to "output.txt"
-                FileOutputStream out = new FileOutputStream("output.txt");
-                out.write(output.getBytes());
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            output += "Num: " + generatedNodesAmount;
+            output+="\n";
+            output += "Cost: ";
 
         }
+        else{
+            output += moves; //first line of the output is the algorithm moves
+            output+="\n";
+            output += "Num: " + generatedNodesAmount; //all the nodes that generated *include nodes that are not in the open list
+            output +="\n";
+            output += "Cost: " + cost;//Path cost//
+            output +="\n";
+        }
+        if(_time){
+            output += runningTime; //DFID running time
+        }
+        streamOutPut(output);
+    }
 
-
-
+    private void streamOutPut(String output){
+        try { //output to "output.txt"
+            FileOutputStream out = new FileOutputStream("output.txt");
+            out.write(output.getBytes());
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -121,4 +165,13 @@ public class TilePuzzle {
         return goal;
 
     }
+
+    public void printPath(Stack<Node> path){
+        String s ="";
+        while(!path.isEmpty()){
+            s += path.pop().toString();
+        }
+        System.out.println(s);
+    }
+
 }

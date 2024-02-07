@@ -66,6 +66,7 @@ public class Operators {
      */
     private static Node generateChild(Node parent, int emptyTileIndex, int tileIndex, int tileNumber) {
         Board parentBoard = parent.getBoard();
+        int moveCost = 30;
 
         // deep copy white tiles
         Map<Integer, int[]> whiteTiles = new HashMap<>();
@@ -77,8 +78,11 @@ public class Operators {
         gameBoard[tileIndex] = 0;
 
         // if this tile is white update it moves on the new board
+
         if (parentBoard.isWhiteTile(tileNumber)) {
             whiteTiles.get(tileNumber)[1]--;
+            moveCost = 1;
+
         }
         if (parent.getParent() != null) {//verify its not the oppose move
             if (Arrays.equals(gameBoard, parent.getParent().getGameBoard())) {
@@ -92,9 +96,7 @@ public class Operators {
             newBoard.setColumns(parentBoard.getColumns());
             newBoard.setRows(parentBoard.getRows());
 
-            Node child = new Node();
-            child.setBoard(newBoard);
-            child.setParent(parent);
+            Node child = new Node(parent,newBoard,moveCost+parent.getCostToNode(),false);
             generatedChilds++;
             return child;
         }
@@ -151,3 +153,7 @@ public class Operators {
         generatedChilds = 0;
     }
 }
+
+
+//-------------------------------------------------------
+
