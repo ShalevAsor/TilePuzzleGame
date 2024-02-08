@@ -124,6 +124,8 @@ public class DFID {
     Node _start;
     private String moves = "";
 
+    private int nodesGenerated = 1;
+
     private final boolean _openList;
 
     private long startTime;
@@ -183,6 +185,7 @@ public class DFID {
             //  there are at most 4 possible moves , allowedOperators generating this node children
 
             for (Node operator : Operators.allowedOperators(n)) {
+                nodesGenerated++;
 //                System.out.println("Operator state: " + operator.getStateAsString());
 //                System.out.println("onPath contents: " + onPath);
                 if (onPath.containsKey(operator.getStateAsString())) {// loop avoidance
@@ -216,9 +219,7 @@ public class DFID {
     }
 
     public String getGeneratedNodesAmount() {
-        int generatedNodesCounter = Operators.generatedChilds;
-        Operators.resetCounter();
-        return Integer.toString(generatedNodesCounter);
+        return Integer.toString(nodesGenerated);
     }
 
     public String getCost(List<Node> path) {

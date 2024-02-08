@@ -14,6 +14,8 @@ public class IDAStar {
     private String moves = "";
     private long startTime;
 
+    private int nodesGenerated = 1;
+
 
 
     public IDAStar(Node start,boolean openList){
@@ -51,6 +53,7 @@ public class IDAStar {
                     return path;
                 }
                 for (Node operator : Operators.allowedOperators(current)) {
+                    nodesGenerated++;
                     String operatorKey = operator.getStateAsString();
                     if (!OL.containsKey(operatorKey) || operator.getEstimatedCost() < OL.get(operatorKey).getEstimatedCost()) {
                         L.push(operator);
@@ -69,9 +72,7 @@ public class IDAStar {
     }
 
     public String getGeneratedNodesAmount() {
-        int generatedNodesCounter = Operators.generatedChilds;
-        Operators.resetCounter();
-        return Integer.toString(generatedNodesCounter);
+        return Integer.toString(nodesGenerated);
     }
 
     public String getCost(List<Node> path) {

@@ -16,6 +16,8 @@ public class AStar {
     private String moves = "";
     private long startTime;
 
+    private int nodesGenerated = 1;
+
 
 
 
@@ -55,6 +57,7 @@ public class AStar {
             }
             CL.put(current.getStateAsString(),current);
             for(Node operator: Operators.allowedOperators(current)){
+                nodesGenerated++;
                 String currentOperatorKey = operator.getStateAsString();
                 if(!CL.contains(currentOperatorKey) && !OL.contains(currentOperatorKey)){
                     PQ.add(operator);
@@ -86,9 +89,7 @@ public class AStar {
     }
 
     public String getGeneratedNodesAmount() {
-        int generatedNodesCounter = Operators.generatedChilds;
-        Operators.resetCounter();
-        return Integer.toString(generatedNodesCounter);
+        return Integer.toString(nodesGenerated);
     }
 
     public String getCost(List<Node> path) {

@@ -16,6 +16,8 @@ public class DFBnB {
     private String moves = "";
     private long startTime;
 
+    private int nodesGenerated = 1;
+
 
 
     public DFBnB(Node start,boolean openList){
@@ -53,6 +55,7 @@ public class DFBnB {
                 List<Node> operators = Operators.allowedOperators(current);
                 operators.sort(new NodeComparator()); // Sort the operators using NodeComparator
                 for (Node g : operators) {
+                    nodesGenerated++;
                     if (g.getEstimatedCost() >= t) {
                         List<Node> updatedOperators = new ArrayList<>();
                         for (Node node : operators) {
@@ -95,14 +98,13 @@ public class DFBnB {
         return result;
     }
 
+
     public String getMoves() {
         return moves;
     }
 
     public String getGeneratedNodesAmount() {
-        int generatedNodesCounter = Operators.generatedChilds;
-        Operators.resetCounter();
-        return Integer.toString(generatedNodesCounter);
+        return Integer.toString(nodesGenerated);
     }
 
     public String getCost(List<Node> path) {

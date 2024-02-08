@@ -60,7 +60,7 @@ public class Node {
     }
 
     public int getHeuristic() {
-        return heuristic();
+        return NodeUtils.heuristic(this);
     }
 
     public int getEstimatedCost() {
@@ -100,22 +100,6 @@ public class Node {
         return -1; // not find the empty tile , must be an error
     }
 
-    /**
-     * Heuristic function based on Manhattan distance
-     * @return estimate path cost from this node to the goal node
-     */
-
-    private int heuristic(){
-        Board currBoard = getBoard();
-        int[] currGameBoard = getGameBoard();
-        int currGameBoardSize = currGameBoard.length;
-        int[] goalGameBaord = NodeUtils.generateGoalState(currGameBoardSize);
-        int hCost = 0;
-        for(int i = 0; i < currGameBoardSize;i++){// calculate the estimate cost from each tile in this gameBoard
-            hCost +=calcDistance(currBoard,i,goalGameBaord); // to the according tile in the goal gameBoard
-        }
-        return hCost;
-    }
 
 
     /**
@@ -142,48 +126,5 @@ public class Node {
         return Arrays.equals(this.getGameBoard(), otherNode.getGameBoard());
     }
 
-    /**
-     * This method return the Manhattan distance + the cost of moving the tile in the index position
-     * @param currBoard - the gameBoard of this node
-     * @param index - the index of the tile we estimate
-     * @param goalGameBoard - goal state gameBoard
-     * @return estimate cost from index to his position in goal gameBoard
-     */
-    private int calcDistance(Board currBoard, int index, int[] goalGameBoard) {
-        int[] currGameBoard = currBoard.getGameBoard();
-        int currValue = currGameBoard[index]; // get this tile value
-        int goalIndex = findIndex(goalGameBoard, currValue); // what is the index of this tile on the goal gameBoard
-        boolean isWhite =  currBoard.isWhiteTile(currValue); // if its white tile it cost 1 to move it
-        //Manhattan distance
-        int currX = (int) (index % Math.sqrt(currGameBoard.length));
-        int currY = (int) (index / Math.sqrt(currGameBoard.length));
-        int goalX = (int) (goalIndex % Math.sqrt(currGameBoard.length));
-        int goalY = (int) (goalIndex / Math.sqrt(currGameBoard.length));
-
-        int manhattanDistance = Math.abs(currX - goalX) + Math.abs(currY - goalY);
-
-        // add the correct cost of this tile to move
-        if (currValue != 0) { // Not an empty tile
-            int tileCost = isWhite ? 1 : 30;
-            manhattanDistance *= tileCost;
-        }
-
-        return manhattanDistance;
-    }
-
-    /**
-     *  This method return the index of the given tile value
-     * @param array
-     * @param value
-     * @return the index of the given tile value
-     */
-    private static int findIndex(int[] array, int value) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == value) {
-                return i;
-            }
-        }
-        return -1;  // value not found
-    }
 
 }

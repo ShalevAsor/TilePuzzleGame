@@ -111,4 +111,62 @@ public class NodeUtils {
         return totalCost;
     }
 
+    /**
+     * This method estimate the total cost from the Node n state to the goal state .
+     * the calculation is based on the Manhattan Distance .
+     * @param n - the current node we estimate
+     * @return the mManhattan Distance cost according to this Tile Puzzle rules
+     */
+
+    public static int heuristic(Node n){
+        int[] currGameBoard = n.getGameBoard();
+        int gameBoardSize = currGameBoard.length;
+        int hCost = 0;
+        for(int i = 0; i < gameBoardSize ; i++){//for each index that in the wrong position
+            if(!isOnCorrectPosition(i,currGameBoard) && currGameBoard[i] != 0){
+                int moves =  getManhattanDistance(i,n.getBoard().getColumns(),currGameBoard); // calculate the distance from the correct postion
+                boolean isWhite = n.getBoard().isWhiteTile(currGameBoard[i]);
+                if(isWhite){ // get the moves cost
+                    hCost += moves;
+                }
+                else{
+                    hCost+= (moves*30);
+                }
+            }
+        }
+        return hCost;
+    }
+
+    /**
+     * This method return the Manhattan Distance from the tileIndex to the correct position on the goal state
+     * @param tileIndex - index of current tile
+     * @param columns - #columns of the game board
+     * @param currGameBoard - current game board
+     * @return Manhattan Distance from the tileIndex to the correct position on the goal state
+     */
+
+    private static int getManhattanDistance(int tileIndex,int columns, int[] currGameBoard) {
+        int rowOfTileIndex =  tileIndex/columns;
+        int columnOfTileIndex = tileIndex % columns;
+        int destIndex = currGameBoard[tileIndex]-1;
+        int rowOfDest = destIndex/columns;
+        int columnOfDest = destIndex % columns;
+        int distance = Math.abs(rowOfDest -rowOfTileIndex)+ Math.abs(columnOfDest - columnOfTileIndex);
+        return distance;
+
+    }
+
+    /**
+     * This method  return true iff this tile index is on the correct position
+     * @param tileIndex index of the current tile
+     * @param currGameBoard - current game board
+     * @return - true iff this tile index is on the correct position
+     */
+
+    private static boolean isOnCorrectPosition(int tileIndex, int[] currGameBoard) {
+        //its on the correct position on the goal game board
+//        if(currGameBoard[tileIndex] == 0 && tileIndex == currGameBoard.length-1){return true;}//then the empty tile is on the correct postion
+         return currGameBoard[tileIndex] == tileIndex + 1;
+    }
+
 }
