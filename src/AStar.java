@@ -61,7 +61,7 @@ public class AStar {
                     OL.put(currentOperatorKey,operator);
                 }
                 else if(OL.contains(operator)){
-                    if(OL.get(currentOperatorKey).getTotalCost() > operator.getTotalCost()){
+                    if(OL.get(currentOperatorKey).getEstimatedCost() > operator.getEstimatedCost()){
                         Node toRemove = OL.get(currentOperatorKey);
                         OL.remove(currentOperatorKey);
                         PQ.remove(toRemove);
@@ -76,9 +76,10 @@ public class AStar {
     }
 
 
-
-
-
+    /**
+     *
+     * @return the moves done by the algorithm
+     */
 
     public String getMoves() {
         return moves;

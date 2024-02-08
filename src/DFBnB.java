@@ -29,7 +29,7 @@ public class DFBnB {
      * @return lowest cost path from start to goal
      */
 
-    public List<Node> DFBnBSearch(Node goal) {
+    public Stack<Node> DFBnBSearch(Node goal) {
         startTime = System.currentTimeMillis();
         Stack<Node> L = new Stack<>();
         Hashtable<String, Node> OL = new Hashtable<>();
@@ -53,7 +53,7 @@ public class DFBnB {
                 List<Node> operators = Operators.allowedOperators(current);
                 operators.sort(new NodeComparator()); // Sort the operators using NodeComparator
                 for (Node g : operators) {
-                    if (g.getTotalCost() >= t) {
+                    if (g.getEstimatedCost() >= t) {
                         List<Node> updatedOperators = new ArrayList<>();
                         for (Node node : operators) {
                             if (node.equals(g) || operators.indexOf(node) >= operators.indexOf(g)) {
@@ -70,7 +70,7 @@ public class DFBnB {
                         if (gPrime.getIsOut()) {
                             operators.remove(gPrime);
                         } else {
-                            if (gPrime.getTotalCost() <= g.getTotalCost()) {
+                            if (gPrime.getEstimatedCost() <= g.getEstimatedCost()) {
                                 operators.remove(g);
                             } else {
                                 operators.remove(gPrime);
@@ -78,12 +78,12 @@ public class DFBnB {
                             }
                         }
                     } else if (Arrays.equals(g.getGameBoard(), goal.getGameBoard())) {//then f(g)< t
-                        t = g.getTotalCost();
+                        t = g.getEstimatedCost();
                         result = NodeUtils.reconstructPath(g);
                         break; // Stop processing further operators since goal is found
                     }
                 }
-                // Insert operators in a reverse order to L and OL
+                // insert operators in a reverse order to L and OL
                 Collections.reverse(operators);
                 for (Node op : operators) {
                     L.push(op);
@@ -112,7 +112,7 @@ public class DFBnB {
 
     /**
      *
-     * @return the running time of the DFID algorithm with 3 digits after the point
+     * @return the running time of the DFBnB algorithm with 3 digits after the point
      */
     public String getRunningTime() {
         long endTime = System.currentTimeMillis();
@@ -122,6 +122,11 @@ public class DFBnB {
         return seconds + "." + String.format("%03d", milliseconds) + " seconds";
     }
 
+    /**
+     * return the factorial of the size - use this method when gameBoard size <= 12
+     * @param size - the gameBaord size
+     * @return
+     */
     private int factorial(int size){
         int ans = 1;
         for(int i = 2; i < size; i++){

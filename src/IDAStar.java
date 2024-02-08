@@ -52,7 +52,7 @@ public class IDAStar {
                 }
                 for (Node operator : Operators.allowedOperators(current)) {
                     String operatorKey = operator.getStateAsString();
-                    if (!OL.containsKey(operatorKey) || operator.getTotalCost() < OL.get(operatorKey).getTotalCost()) {
+                    if (!OL.containsKey(operatorKey) || operator.getEstimatedCost() < OL.get(operatorKey).getEstimatedCost()) {
                         L.push(operator);
                         OL.put(operatorKey, operator);
                     }
@@ -81,7 +81,7 @@ public class IDAStar {
 
     /**
      *
-     * @return the running time of the DFID algorithm with 3 digits after the point
+     * @return the running time of the IDAStar algorithm with 3 digits after the point
      */
     public String getRunningTime() {
         long endTime = System.currentTimeMillis();

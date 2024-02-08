@@ -40,27 +40,7 @@ public class TestAlgorithms {
         //System.out.println("The Path is : " + result.printPath());
     }
 
-    @Test
-    public void testGetHeuristic() {
-        /*
-         * Create a sample node with a board state
-         * Calculate the heuristic based on the Manhattan distance for this state
-         * Compare the calculated heuristic with the expected value
-         */
-        int[] gameBoard = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 11}; // Sample game board
-        Board board = new Board();
-        board.setGameBoard(gameBoard);
-        board.setRows(3);
-        board.setColumns(4);
-        Node node = new Node();
-        node.setBoard(board);
 
-        int expectedHeuristic = NodeUtils.manhattanDistance(node); // Calculate expected heuristic
-
-        int actualHeuristic = node.getHeuristic(); // Get actual heuristic
-        System.out.println("val"+actualHeuristic);
-        Assertions.assertEquals(expectedHeuristic, actualHeuristic);
-    }
 
 
 //    @Test

@@ -20,16 +20,13 @@ public class Operators {
         List<Node> operators = new ArrayList<>();
         //get the index of the empty tile for this current Node n
         int emptyTileIndex = n.getEmptyTileIndex();
-        //get all the indexes around the empty tile -> above , under , left , right (at most 4 )
+        //get all the indexes around the empty tile by this order of moves-> left , up , right , down (at most 4 )
         List<Integer> aroundEmptyTile = getAroundEmptyTile(emptyTileIndex, n.getGameBoard().length, n.getBoard().getRows(), n.getBoard().getColumns());
-        // get the parent node
-        Node parent = n.getParent();
 
         for (int tileIndex : aroundEmptyTile) { //for each possible move that represents as tile index
             int tileNumber = n.getBoard().getTileValue(tileIndex); // get this tile number
-            //if this move is valid - if its white tile its still have moves left && its not the opposite move
+            // if this tile is white and still have moves left
             if (isMovesLeft(n.getBoard(), emptyTileIndex, tileIndex, tileNumber)) {
-
                 // generate this child and add it to the valid child list
                 Node child = generateChild(n, emptyTileIndex, tileIndex, tileNumber);
                 if(child != null){
@@ -86,7 +83,7 @@ public class Operators {
         }
         if (parent.getParent() != null) {//verify its not the oppose move
             if (Arrays.equals(gameBoard, parent.getParent().getGameBoard())) {
-                return null;
+                return null; // if this node parent gameBoard equals to this child , its oppose move (for examle L->R)
             }
         }
             // Create a new node
@@ -103,7 +100,7 @@ public class Operators {
 
 
     /**
-     * This method return the indexes around the empty tile -> above , under , left , right
+     * This method return the indexes around the empty tile ->  left , up , right , down (at most 4 )
      * @param emptyTileIndex - index of the empty tile
      * @param size - size of the gameBoard
      * @return list of indexes of the tiles around the empty tile
@@ -154,6 +151,4 @@ public class Operators {
     }
 }
 
-
-//-------------------------------------------------------
 

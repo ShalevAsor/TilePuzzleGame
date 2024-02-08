@@ -186,7 +186,6 @@ public class DFID {
 //                System.out.println("Operator state: " + operator.getStateAsString());
 //                System.out.println("onPath contents: " + onPath);
                 if (onPath.containsKey(operator.getStateAsString())) {// loop avoidance
-                    System.out.println("VISITED");
                     continue;
                 }
 
@@ -211,28 +210,6 @@ public class DFID {
         }
     }
 
-
-//    /**
-//     * This method return the total cost of a path
-//     * @param path -
-//     * @return total cost of a path
-//     */
-//    private int getPathCost(List<Node> path) {
-//        int totalCost = 0;
-//
-//        for (int i = 1; i < path.size(); i++) {
-//            Node currentNode = path.get(i);
-//            Node previousNode = path.get(i - 1);
-//
-//            int moveCost = 1;//if we didnt move a white tile then the cost is 30
-//            if (!currentNode.getBoard().isWhiteTile(previousNode.getBoard().getTileValue(currentNode.getEmptyTileIndex()))) {
-//                moveCost = 30;
-//            }//update total cost
-//            totalCost += moveCost;
-//        }
-//
-//        return totalCost;
-//    }
 
     public String getMoves() {
         return moves;
