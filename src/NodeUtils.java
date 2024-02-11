@@ -136,6 +136,47 @@ public class NodeUtils {
         }
         return hCost;
     }
+//    public static int heuristic(Node n){
+//        int[] currGameBoard = n.getGameBoard();
+//        int gameBoardSize = currGameBoard.length;
+//        int hCost = 0;
+//        for(int i = 0; i < gameBoardSize ; i++){//for each index that in the wrong position
+//            if(!isOnCorrectPosition(i,currGameBoard) && currGameBoard[i] != 0){
+//                int moves =  getManhattanDistance(i,n.getBoard().getColumns(),currGameBoard); // calculate the distance from the correct postion
+//                boolean isWhite = n.getBoard().isWhiteTile(currGameBoard[i]);
+//                if(isWhite){ // get the moves cost
+//                    int movesLeft = n.getBoard().getTileMoves(currGameBoard[i]);
+//                    int moveToMake = moves - movesLeft;
+//                    hCost += moveToMake;
+//                }
+//                else{
+//                    hCost+= (moves*30);
+//                }
+//            }
+//        }
+//        return hCost;
+//    }
+
+//    public static int heuristic(Node n){
+//        int[] currGameBoard = n.getGameBoard();
+//        int gameBoardSize = currGameBoard.length;
+//        int hCost = 0;
+//        for(int i = 0; i < gameBoardSize ; i++){//for each index that in the wrong position
+//            if(!isOnCorrectPosition(i,currGameBoard) && currGameBoard[i] != 0){
+//                int moves =  getManhattanDistance(i,n.getBoard().getColumns(),currGameBoard); // calculate the distance from the correct postion
+//                boolean isWhite = n.getBoard().isWhiteTile(currGameBoard[i]);
+//                if(isWhite){ // get the moves cost
+//                    int movesLeft = n.getBoard().getTileMoves(currGameBoard[i]);
+//                    int moveToMake = moves - movesLeft;
+//                    hCost += moveToMake;
+//                }
+//                else{
+//                    hCost+= (moves*30);
+//                }
+//            }
+//        }
+//        return hCost;
+//    }
 
     /**
      * This method return the Manhattan Distance from the tileIndex to the correct position on the goal state

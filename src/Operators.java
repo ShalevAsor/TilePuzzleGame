@@ -104,60 +104,132 @@ public class Operators {
      * @return list of indexes of the tiles around the empty tile
      */
 
-//    private static List<Integer> getAroundEmptyTile(int emptyTileIndex, int size,int rows,int columns) {
-//        List<Integer> result = new ArrayList<>();
-//
-//        // Move left - the index that right of the empty tile is in the bounds
-//        //  the row and column of the empty tile
-//        int emptyTileRow = emptyTileIndex / columns;
-//        int emptyTileCol = emptyTileIndex % columns;
-//
-//        // the row and column of the neighbor to the right
-//        int rightNeighborRow = (emptyTileIndex + 1) / columns;
-//        boolean canMoveLeft = (rightNeighborRow == emptyTileRow )&&(emptyTileIndex+1 < size);
-//        if (canMoveLeft) {
-//            result.add(emptyTileIndex + 1);
-//        }
-    //in this version the moves direction based  on the empty tile - need to check if this version is the correct version or the one above
     private static List<Integer> getAroundEmptyTile(int emptyTileIndex, int size,int rows,int columns) {
         List<Integer> result = new ArrayList<>();
 
         // Move left - the index that right of the empty tile is in the bounds
         //  the row and column of the empty tile
         int emptyTileRow = emptyTileIndex / columns;
+        int emptyTileColumn =emptyTileIndex % columns;
 
-        // Move left
-        int leftNeighborRow = (emptyTileIndex - 1) / columns;
-        boolean canMoveRight = (leftNeighborRow == emptyTileRow )&&(emptyTileIndex-1 >= 0);
-        if (canMoveRight) {
-            result.add(emptyTileIndex - 1);
-        }
-
-        // Move up
-        boolean canMoveDown = (emptyTileIndex - columns >= 0);
-        if (canMoveDown) {
-            result.add(emptyTileIndex - columns);
-        }
-
-        // move right
+        // move left - if the index that right to the empty tile can move left
         int rightNeighborRow = (emptyTileIndex + 1) / columns;
-        boolean canMoveLeft = (rightNeighborRow == emptyTileRow )&&(emptyTileIndex+1 < size);
+        boolean canMoveLeft = (rightNeighborRow == emptyTileRow )&&(emptyTileColumn+1 < columns);
         if (canMoveLeft) {
             result.add(emptyTileIndex + 1);
         }
 
-
-
-        // Move down  -if the index that under the empty tile is in the bounds
+        // Move up  -if the index that under the empty tile can move up
         boolean canMoveUp = (emptyTileIndex + columns < size);
 
         if (canMoveUp) {
             result.add(emptyTileIndex + columns);
         }
 
+        // move right - if the index that left to the empty tile can move right
+        int leftNeighborRow = (emptyTileIndex - 1) / columns;
+        boolean canMoveRight = (leftNeighborRow == emptyTileRow )&&(emptyTileColumn -1 >= 0);
+        if (canMoveRight) {
+            result.add(emptyTileIndex - 1);
+        }
+
+
+        // Move down
+        boolean canMoveDown = (emptyTileIndex - columns >= 0);
+        if (canMoveDown) {
+            result.add(emptyTileIndex - columns);
+        }
+
+
+
+
 
         return result;
     }
+
+//    private static List<Integer> getAroundEmptyTile(int emptyTileIndex, int size,int rows,int columns) {
+//        List<Integer> result = new ArrayList<>();
+//
+//        // Move left - the index that right of the empty tile is in the bounds
+//        //  the row and column of the empty tile
+//        int emptyTileRow = emptyTileIndex / columns;
+//
+//        // move left
+//        int rightNeighborRow = (emptyTileIndex + 1) / columns;
+//        boolean canMoveLeft = (rightNeighborRow == emptyTileRow )&&(emptyTileIndex+1 < size);
+//        if (canMoveLeft) {
+//            result.add(emptyTileIndex + 1);
+//        }
+//
+//        // Move uo  -if the index that under the empty tile is in the bounds
+//        boolean canMoveUp = (emptyTileIndex + columns < size);
+//
+//        if (canMoveUp) {
+//            result.add(emptyTileIndex + columns);
+//        }
+//
+//
+//        // Move right
+//        int leftNeighborRow = (emptyTileIndex - 1) / columns;
+//        boolean canMoveRight = (leftNeighborRow == emptyTileRow )&&(emptyTileIndex-1 >= 0);
+//        if (canMoveRight) {
+//            result.add(emptyTileIndex - 1);
+//        }
+//
+//        // Move down
+//        boolean canMoveDown = (emptyTileIndex - columns >= 0);
+//        if (canMoveDown) {
+//            result.add(emptyTileIndex - columns);
+//        }
+//
+//
+//
+//
+//
+//        return result;
+//    }
+
+
+    //in this version the moves direction based  on the empty tile - need to check if this version is the correct version or the one above
+//    private static List<Integer> getAroundEmptyTile(int emptyTileIndex, int size,int rows,int columns) {
+//        List<Integer> result = new ArrayList<>();
+//
+//        // Move left - the index that right of the empty tile is in the bounds
+//        //  the row and column of the empty tile
+//        int emptyTileRow = emptyTileIndex / columns;
+//
+//        // Move left
+//        int leftNeighborRow = (emptyTileIndex - 1) / columns;
+//        boolean canMoveRight = (leftNeighborRow == emptyTileRow )&&(emptyTileIndex-1 >= 0);
+//        if (canMoveRight) {
+//            result.add(emptyTileIndex - 1);
+//        }
+//
+//        // Move up
+//        boolean canMoveDown = (emptyTileIndex - columns >= 0);
+//        if (canMoveDown) {
+//            result.add(emptyTileIndex - columns);
+//        }
+//
+//        // move right
+//        int rightNeighborRow = (emptyTileIndex + 1) / columns;
+//        boolean canMoveLeft = (rightNeighborRow == emptyTileRow )&&(emptyTileIndex+1 < size);
+//        if (canMoveLeft) {
+//            result.add(emptyTileIndex + 1);
+//        }
+//
+//
+//
+//        // Move down  -if the index that under the empty tile is in the bounds
+//        boolean canMoveUp = (emptyTileIndex + columns < size);
+//
+//        if (canMoveUp) {
+//            result.add(emptyTileIndex + columns);
+//        }
+//
+//
+//        return result;
+//    }
 }
 
 

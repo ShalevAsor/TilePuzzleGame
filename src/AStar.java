@@ -15,8 +15,9 @@ public class AStar {
 
     private String moves = "";
     private long startTime;
+    private long endTime;
 
-    private int nodesGenerated = 1;
+    private int nodesGenerated = 0;
 
 
 
@@ -32,16 +33,70 @@ public class AStar {
      * @return lowest cost path from start to goal
      */
 
+//    public Stack<Node> UCS(Node goal){
+//        startTime = System.currentTimeMillis();
+//        PriorityQueue<Node> PQ = new PriorityQueue<Node>(new NodeComparator());
+//        Stack<Node> path = new Stack<>();
+//        //Hash table for open list
+//        Hashtable<String,Node> OL = new Hashtable<>();
+//        PQ.add(_start);
+//        OL.put(_start.getStateAsString(),_start);
+//        //Hash table for closed list
+//        Hashtable<String,Node> CL = new Hashtable<>();
+//
+//        while(!PQ.isEmpty()){
+//            System.out.println("SIZE: "+PQ.size());
+//
+//            Node current = PQ.poll();
+//            String currentKey = current.getStateAsString();
+//            if(_openList){
+//                System.out.println("Open List: "+OL.toString());
+//            }
+//            OL.remove(currentKey);
+//            if(Arrays.equals(current.getGameBoard(),goal.getGameBoard())){
+//                path =  NodeUtils.reconstructPath(current);
+//                moves = NodeUtils.getMovesAsString(path);
+//                return path;
+//            }
+//            CL.put(current.getStateAsString(),current);
+//            for(Node operator: Operators.allowedOperators(current)){
+//                nodesGenerated++;
+//                String currentOperatorKey = operator.getStateAsString();
+//                if(!CL.containsKey(currentOperatorKey) && !OL.containsKey(currentOperatorKey)){
+//                    System.out.println("VISTED3");
+//
+//                    PQ.add(operator);
+//                    OL.put(currentOperatorKey,operator);
+//                }
+//                else if(OL.containsKey(currentOperatorKey)){
+//                    System.out.println("VISTED1");
+//                    if(OL.get(currentOperatorKey).getEstimatedCost() > operator.getEstimatedCost()){
+//                        System.out.println("VISTED2");
+//
+//                        Node toRemove = OL.get(currentOperatorKey);
+//                        OL.remove(currentOperatorKey);
+//                        PQ.remove(toRemove);
+//                        PQ.add(operator);
+//                        OL.put(currentOperatorKey,current);
+//                    }
+//                }
+//            }
+//
+//        }
+//        return path;
+//    }
+
     public Stack<Node> UCS(Node goal){
         startTime = System.currentTimeMillis();
         PriorityQueue<Node> PQ = new PriorityQueue<Node>(new NodeComparator());
         Stack<Node> path = new Stack<>();
         //Hash table for open list
         Hashtable<String,Node> OL = new Hashtable<>();
-        PQ.add(_start);
-        OL.put(_start.getStateAsString(),_start);
         //Hash table for closed list
         Hashtable<String,Node> CL = new Hashtable<>();
+        PQ.add(_start);
+        OL.put(_start.getStateAsString(),_start);
+
 
         while(!PQ.isEmpty()){
             Node current = PQ.poll();
@@ -53,29 +108,31 @@ public class AStar {
             if(Arrays.equals(current.getGameBoard(),goal.getGameBoard())){
                 path =  NodeUtils.reconstructPath(current);
                 moves = NodeUtils.getMovesAsString(path);
+                endTime = System.currentTimeMillis();
                 return path;
             }
             CL.put(current.getStateAsString(),current);
             for(Node operator: Operators.allowedOperators(current)){
                 nodesGenerated++;
                 String currentOperatorKey = operator.getStateAsString();
-                if(!CL.contains(currentOperatorKey) && !OL.contains(currentOperatorKey)){
+                if(!CL.containsKey(currentOperatorKey) && !OL.containsKey(currentOperatorKey)){
                     PQ.add(operator);
                     OL.put(currentOperatorKey,operator);
                 }
-                else if(OL.contains(operator)){
-                    if(OL.get(currentOperatorKey).getEstimatedCost() > operator.getEstimatedCost()){
-                        Node toRemove = OL.get(currentOperatorKey);
-                        OL.remove(currentOperatorKey);
-                        PQ.remove(toRemove);
+                else if(OL.containsKey(currentOperatorKey)){
+                    Node g = OL.get(currentOperatorKey);
+                    if(g.getEstimatedCost() > operator.getEstimatedCost()){
+                        PQ.remove(g);
                         PQ.add(operator);
-                        OL.put(currentOperatorKey,current);
+                        OL.remove(currentOperatorKey);
+                        OL.put(currentOperatorKey,operator);
                     }
                 }
             }
 
         }
-        return path;
+        endTime = System.currentTimeMillis();
+        return null;
     }
 
 
@@ -95,6 +152,13 @@ public class AStar {
     public String getCost(List<Node> path) {
         int totalCost = NodeUtils.getPathCost(path);
         return String.valueOf(totalCost);
+    }
+
+    public long getEndTime(){
+        return this.endTime;
+    }
+    public long getStartTime(){
+        return this.startTime;
     }
 
     /**

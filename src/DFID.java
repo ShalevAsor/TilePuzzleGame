@@ -124,11 +124,13 @@ public class DFID {
     Node _start;
     private String moves = "";
 
-    private int nodesGenerated = 1;
+    private int nodesGenerated = 0;
 
     private final boolean _openList;
 
     private long startTime;
+
+    private long endTime;
 
     public DFID(boolean openList,Node start){
         this._openList = openList;
@@ -174,6 +176,7 @@ public class DFID {
         if (n.equals(goal)) {//we reach the goal
             result.setPath(NodeUtils.reconstructPath( n)); //reconstruct the path from this node
             moves = NodeUtils.getMovesAsString(result.getPath());
+            endTime = System.currentTimeMillis();
             return result;
         } else if (limit == 0) { // we reach the limit but not path found
             result.setCutOff(CUTOFF);
@@ -198,6 +201,7 @@ public class DFID {
                     isCutOff = true;
                 } else if (!Objects.equals(result.getFail(), FAIL)) {
                  //   moves = NodeUtils.getMovesAsString(result.getPath());  //update the moves
+                    endTime = System.currentTimeMillis();
                     return result;
                 }
             }
@@ -220,6 +224,12 @@ public class DFID {
 
     public String getGeneratedNodesAmount() {
         return Integer.toString(nodesGenerated);
+    }
+    public long getEndTime(){
+        return this.endTime;
+    }
+    public long getStartTime(){
+        return this.startTime;
     }
 
     public String getCost(List<Node> path) {

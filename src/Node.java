@@ -16,6 +16,7 @@ public class Node {
     private Board _board;
 
     private int _costToNode = 0;
+    private int _generatedLevel = 0;
 
 
     private boolean _isOut; //indicator if IDAStar and DFBnB
@@ -30,6 +31,11 @@ public class Node {
         this._board = board;
         this._costToNode = costToNode;
         this._isOut = isOut;
+        this._generatedLevel = parent.getGeneratedLevel() +1;
+    }
+
+    public int getGeneratedLevel(){
+        return  this._generatedLevel;
     }
 
     public void setIsOut(boolean out){

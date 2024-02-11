@@ -25,6 +25,7 @@ public class TilePuzzle {
      */
     public void solve(){
         String output = "";
+
         Node goal = generateGoalNode(); // init goal
         /* Cover all the input options  */
 
@@ -32,25 +33,44 @@ public class TilePuzzle {
             case "DFID": {
                 DFID dfid = new DFID(_openList, _start); //init DFID with start Node and open list indicator
                 LimitedDFSResult res = dfid.DFIdAlgo(goal);// start the search and print the output according to input
-                generateOutPut(output, dfid.getMoves(), dfid.getGeneratedNodesAmount(), dfid.getCost(res.getPath()), dfid.getRunningTime(), res.getPath().size());
+                String runningTime = getRunningTime(dfid.getStartTime(),dfid.getEndTime());
+                generateOutPut(output, dfid.getMoves(), dfid.getGeneratedNodesAmount(), dfid.getCost(res.getPath()), runningTime, res.getPath().size());
                 break;
             }
             case "A*": {
                 AStar aStar = new AStar(_start, _openList);
                 Stack<Node> res = aStar.UCS(goal);
-                generateOutPut(output, aStar.getMoves(), aStar.getGeneratedNodesAmount(), aStar.getCost(res), aStar.getRunningTime(), res.size());
+                String runningTime = getRunningTime(aStar.getStartTime(),aStar.getEndTime());
+                if(res == null){
+                    generateNoPath(output,aStar.getGeneratedNodesAmount(),runningTime);
+                }
+                else{
+                    generateOutPut(output, aStar.getMoves(), aStar.getGeneratedNodesAmount(), aStar.getCost(res), runningTime, res.size());
+
+                }
                 break;
             }
             case "IDA*": {
                 IDAStar idaStar = new IDAStar(_start, _openList);
-                List<Node> res = idaStar.IDAStarSearch(goal);
-                generateOutPut(output, idaStar.getMoves(), idaStar.getGeneratedNodesAmount(), idaStar.getCost(res), idaStar.getRunningTime(), res.size());
+                List<Node> res = idaStar.IDAStarAlgo(goal);
+                String runningTime = getRunningTime(idaStar.getStartTime(),idaStar.getEndTime());
+
+                if(res == null){
+                    generateNoPath(output,idaStar.getGeneratedNodesAmount(),runningTime);
+
+                }
+                else{
+                    generateOutPut(output, idaStar.getMoves(), idaStar.getGeneratedNodesAmount(), idaStar.getCost(res), runningTime, res.size());
+
+                }
                 break;
             }
             case "DFBnB": {
                 DFBnB dfBnB = new DFBnB(_start, _openList);
-                List<Node> res = dfBnB.DFBnBSearch(goal);
-                generateOutPut(output, dfBnB.getMoves(), dfBnB.getGeneratedNodesAmount(), dfBnB.getCost(res), dfBnB.getRunningTime(), res.size());
+                List<Node> res = dfBnB.DFBnBAlgo(goal);
+                String runningTime = getRunningTime(dfBnB.getStartTime(),dfBnB.getEndTime());
+
+                generateOutPut(output, dfBnB.getMoves(), dfBnB.getGeneratedNodesAmount(), dfBnB.getCost(res), runningTime, res.size());
                 break;
             }
         }
@@ -68,11 +88,12 @@ public class TilePuzzle {
 
     private void generateOutPut(String output, String moves, String generatedNodesAmount, String cost, String runningTime,int pathSize) {
         if(pathSize == 0){
-            output+="no path";
+            if(Integer.parseInt(generatedNodesAmount) != 0){
+                output+="no path";
+            }
             output+="\n";
             output += "Num: " + generatedNodesAmount;
             output+="\n";
-            output += "Cost: ";
 
         }
         else{
@@ -97,6 +118,19 @@ public class TilePuzzle {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void generateNoPath(String output, String generatedNodesAmount, String runningTime) {
+            output += "no path";
+            output += "\n";
+            output += "Num: " + generatedNodesAmount;
+            output += "\n";
+            if(_time){
+                output += runningTime;
+
+            }
+        streamOutPut(output);
+
     }
 
     /**
@@ -172,6 +206,13 @@ public class TilePuzzle {
             s += path.pop().toString();
         }
         System.out.println(s);
+    }
+
+    public String getRunningTime(long startTime,long endTime) {
+        long duration = endTime - startTime;
+        long seconds = duration / 1000;
+        long milliseconds = duration % 1000;
+        return seconds + "." + String.format("%03d", milliseconds) + " seconds";
     }
 
 }
