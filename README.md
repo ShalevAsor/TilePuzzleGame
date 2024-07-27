@@ -83,6 +83,13 @@ Num: 34
 Cost: 33
 0.002 seconds
 
+
+## 🌐 Connect with Me
+
+- **Website:** [My Website](https://shalevasor.github.io/)
+- **Contact:** [shalevasor@gmail.com](mailto:shalevasor@gmail.com)
+- **Connect with me on LinkedIn:** [Shalev Asor](https://www.linkedin.com/in/shalev-asor)
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue to improve the project.
